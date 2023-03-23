@@ -37,7 +37,7 @@ namespace Trainee_Task
 					Console.WriteLine();
 					HttpWebRequest request = (HttpWebRequest)WebRequest.Create(finalURL);
 					HttpWebResponse response = (HttpWebResponse)request.GetResponse();
-					StreamReader streamReader = new StreamReader(response.GetResponseStream());
+					StreamReader streamReader = new StreamReader(response.GetResponseStream(), System.Text.Encoding.UTF8);
 					string responseText = streamReader.ReadToEnd();
 					Regex regex = new Regex("<a href=\"(.*?)\"");
 					MatchCollection matches = regex.Matches(responseText);
@@ -71,8 +71,9 @@ namespace Trainee_Task
 							//start
 							stopwatch.Start();
 							string links = match.Groups[2].Value;
-							//adding link to the list
-							crawlingWebSite.Add(links);
+							if(links.Contains(domain))
+								//adding link to the list
+								crawlingWebSite.Add(links);
 							//stop
 							stopwatch.Stop();
 						}
